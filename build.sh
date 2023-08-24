@@ -435,7 +435,7 @@ node --version
   cd $DEPS/libde265
   [ -x configure ] || ./autogen.sh
   CXXFLAGS=-O3 emconfigure ./configure --disable-sse --disable-dec265 --disable-sherlock265
-  make -C _build install
+  make install
 )
 
 [ -f "$TARGET/lib/pkgconfig/libheif.pc" ] || [ -n "$DISABLE_AVIF" ] || (
