@@ -431,7 +431,7 @@ node --version
 [ -f "$TARGET/lib/pkgconfig/libde265.pc" ] || [ -n "$DISABLE_AVIF" ] || (
   stage "Compiling libde265"
   mkdir $DEPS/libde265
-  curl -Ls https://github.com/strukturag/libde265/releases/download/v$VERSION_LIBDE265}/libde265-$VERSION_LIBDE265.tar.gz | tar xzC $DEPS/libde265 --strip-components=1
+  curl -Ls https://github.com/strukturag/libde265/releases/download/v$VERSION_LIBDE265/libde265-$VERSION_LIBDE265.tar.gz | tar xzC $DEPS/libde265 --strip-components=1
   cd $DEPS/libde265
   [ -x configure ] || ./autogen.sh
   CXXFLAGS=-O3 emconfigure ./configure --disable-sse --disable-dec265 --disable-sherlock265
