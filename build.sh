@@ -434,7 +434,7 @@ node --version
   curl -Ls https://github.com/strukturag/libde265/releases/download/v$VERSION_LIBDE265/libde265-$VERSION_LIBDE265.tar.gz | tar xzC $DEPS/libde265 --strip-components=1
   cd $DEPS/libde265
   [ -x configure ] || ./autogen.sh
-  CXXFLAGS=-O3 emconfigure ./configure --disable-sse --disable-dec265 --disable-sherlock265
+  CXXFLAGS=-O3 emconfigure ./configure --prefix=$TARGET --disable-sse --disable-dec265 --disable-sherlock265
   make install
 )
 
