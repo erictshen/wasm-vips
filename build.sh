@@ -182,6 +182,7 @@ VERSION_WEBP=1.3.1          # https://chromium.googlesource.com/webm/libwebp
 VERSION_TIFF=4.5.1          # https://gitlab.com/libtiff/libtiff
 VERSION_RESVG=0.35.0        # https://github.com/RazrFalcon/resvg
 VERSION_AOM=3.6.1           # https://aomedia.googlesource.com/aom
+VERSION_LIBDE265=1.0.12     # https://github.com/strukturag/libde265
 VERSION_HEIF=1.16.2         # https://github.com/strukturag/libheif
 VERSION_VIPS=8.14.4         # https://github.com/libvips/libvips
 
@@ -427,6 +428,16 @@ node --version
   make -C _build install
 )
 
+[ -f "$TARGET/lib/pkgconfig/libde265.pc" ] || [ -n "$DISABLE_AVIF" ] || (
+  stage "Compiling libde265"
+  mkdir $DEPS/libde265
+  curl -Ls https://github.com/strukturag/libde265/releases/download/v$VERSION_LIBDE265}/libde265-$VERSION_LIBDE265.tar.gz | tar xzC $DEPS/libde265 --strip-components=1
+  cd $DEPS/libde265
+  [ -x configure ] || ./autogen.sh
+  CXXFLAGS=-O3 emconfigure ./configure --disable-sse --disable-dec265 --disable-sherlock265
+  make -C _build install
+)
+
 [ -f "$TARGET/lib/pkgconfig/libheif.pc" ] || [ -n "$DISABLE_AVIF" ] || (
   stage "Compiling libheif"
   mkdir $DEPS/heif
@@ -439,7 +450,7 @@ node --version
     -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$TARGET \
     -DCMAKE_POSITION_INDEPENDENT_CODE=$PIC -DBUILD_SHARED_LIBS=0 \
     -DENABLE_PLUGIN_LOADING=0 -DWITH_EXAMPLES=0 \
-    -DWITH_LIBDE265=0 -DWITH_X265=0 -DWITH_DAV1D=0 -DWITH_SvtEnc=0 -DWITH_RAV1E=0 \
+    -DWITH_LIBDE265=1 -DWITH_X265=0 -DWITH_DAV1D=0 -DWITH_SvtEnc=0 -DWITH_RAV1E=0 \
     -DWITH_AOM_ENCODER=1 -DWITH_AOM_DECODER=1 \
     -DENABLE_MULTITHREADING_SUPPORT=0 # Disable threading support, we rely on libvips' thread pool.
   make -C _build install
